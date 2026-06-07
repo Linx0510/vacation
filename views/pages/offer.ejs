@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Публичная оферта - Вакация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>">
+</head>
+<body class="static-page-body">
+    <%- include('../partials/header') %>
+
+    <main class="container static-page" style="padding: 60px 20px; max-width: 800px; margin: 0 auto;">
+        <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 30px; color: #1e293b;">Публичная оферта</h1>
+        
+        <div class="legal-content" style="line-height: 1.8; color: #4a5568;">
+            <p style="margin-bottom: 20px;">Данный документ является официальным предложением (публичной офертой) платформы «Вакация» и содержит все существенные условия использования сервиса.</p>
+            
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin: 30px 0 15px; color: #1e293b;">1. Предмет соглашения</h2>
+            <p>Платформа предоставляет пользователям возможность поиска, просмотра и регистрации на мероприятия, а организаторам — возможность размещения информации о событиях.</p>
+            
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin: 30px 0 15px; color: #1e293b;">2. Статус платформы</h2>
+            <p>«Вакация» является информационным посредником. Мы не являемся организаторами мероприятий и не несем ответственности за качество их проведения, если иное не указано отдельно.</p>
+            
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin: 30px 0 15px; color: #1e293b;">3. Права и обязанности</h2>
+            <p>Пользователь обязуется предоставлять достоверную информацию при регистрации. Организатор несет полную ответственность за содержание размещаемых объявлений.</p>
+        </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>

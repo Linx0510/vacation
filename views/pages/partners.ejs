@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стать партнёром - Вакация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>">
+    <style>
+        body { font-family: 'Manrope', sans-serif; background-color: #f8fafc; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .ballone { font-family: 'Bellota', cursive; position: relative; display: inline-block; margin-top: 20px; line-height: 1.4; }
+        .ballone svg { position: absolute; bottom: -8px; left: 0; width: 100%; height: 12px; }
+        
+        .partners-hero {
+            padding: 120px 0 100px;
+            text-align: center;
+            background: white;
+            border-radius: 0 0 60px 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+
+        .partners-container {
+            max-width: 1100px;
+            margin: 40px auto 120px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .partners-card {
+            background: white;
+            padding: 80px;
+            border-radius: 48px;
+            box-shadow: 0 20px 50px rgba(99, 91, 255, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .partners-info h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 32px;
+            color: var(--text-dark);
+            line-height: 1.1;
+        }
+
+        .partners-info p {
+            font-size: 18px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 48px;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+
+        .benefit-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--light-purple);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .benefit-text {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 17px;
+        }
+
+        .partners-form {
+            background: #f8fafc;
+            padding: 50px;
+            border-radius: 40px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            font-family: 'Manrope', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 16px 40px 16px 16px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            font-family: 'Manrope', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23635bff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 18px;
+            background-color: white;
+            cursor: pointer;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-group select:hover {
+            border-color: var(--primary-purple);
+            background-color: #fcfcff;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            border-radius: 18px;
+            background: var(--primary-purple);
+            color: white;
+            border: none;
+            font-weight: 800;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 91, 255, 0.2);
+            background: #4f46e5;
+        }
+        
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #22c55e;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            animation: slideInRight 0.3s ease;
+        }
+        
+        .toast-notification.error {
+            background: #ef4444;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        @media (max-width: 992px) {
+            .partners-card {
+                grid-template-columns: 1fr;
+                padding: 40px;
+                gap: 40px;
+            }
+            .partners-hero h1 { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <main>
+        <section class="partners-hero">
+            <div class="container">
+                <h1 style="font-size: 4rem; font-weight: 800; color: var(--text-dark); margin: 0; letter-spacing: -2px;">
+                    Станьте нашим <br>
+                    <span class="ballone">партнёром<svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0,10 Q50,0 100,10" stroke="var(--primary-purple)" stroke-width="6" fill="none" stroke-linecap="round"/></svg></span>
+                </h1>
+            </div>
+        </section>
+
+        <div class="partners-container">
+            <div class="partners-card">
+                <div class="partners-info">
+                    <h2>Развивайте<br>свой бизнес вместе с нами</h2>
+                    <p>Мы&nbsp;помогаем владельцам площадок находить организаторов и заполнять свободные даты качественными мероприятиями.</p>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </div>
+                        <div class="benefit-text">Новые клиенты<br>и организаторы</div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        </div>
+                        <div class="benefit-text">Удобное<br>управление бронированием</div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        </div>
+                        <div class="benefit-text">Повышение<br>узнаваемости бренда</div>
+                    </div>
+                </div>
+
+                <div class="partners-form">
+                    <form id="partners-contact-form" action="/partners/apply" method="POST">
+                        <div class="form-group">
+                            <label>Название площадки</label>
+                            <input type="text" name="company_name" placeholder="Например: Loft Garden" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Тип площадки</label>
+                            <select name="venue_type" required>
+                                <option value="">Выберите тип</option>
+                                <option value="cafe">Кафе / Ресторан</option>
+                                <option value="loft">Лофт</option>
+                                <option value="studio">Студия</option>
+                                <option value="outdoor">База отдыха / Открытая площадка</option>
+                                <option value="other">Другое</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Ваше имя</label>
+                            <input type="text" name="contact_name" placeholder="Как к вам обращаться" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Телефон</label>
+                            <input type="tel" id="partner-phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Город</label>
+                            <input type="text" name="city" placeholder="Ваш город" required>
+                        </div>
+                        <div class="form-group" style="display: flex; gap: 12px; align-items: flex-start; margin-top: 25px;">
+                            <input type="checkbox" id="consent" name="consent" required style="width: 20px; height: 20px; margin-top: 2px; cursor: pointer; accent-color: var(--primary-purple);">
+                            <label for="consent" style="font-size: 13px; color: #64748b; font-weight: 500; line-height: 1.4; cursor: pointer;">
+                                Я согласен на обработку персональных данных и принимаю условия <a href="/privacy" target="_blank" style="color: var(--primary-purple); text-decoration: underline;">политики конфиденциальности</a>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn-submit">Отправить заявку</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+
+    <script src="https://unpkg.com/imask"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const phoneInput = document.getElementById('partner-phone');
+            if (phoneInput) {
+                IMask(phoneInput, { mask: '+{7} (000) 000-00-00' });
+            }
+        });
+        
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${isError ? 'error' : ''}`;
+            toast.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                    ${isError ? '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>' : '<polyline points="20 6 9 17 4 12"></polyline>'}
+                </svg>
+                <div>${message}</div>
+                <button class="toast-close" onclick="this.parentElement.remove()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; margin-left: 10px;">&times;</button>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+        
+        document.getElementById('partners-contact-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('button');
+            const originalText = btn.textContent;
+            
+            btn.disabled = true;
+            btn.textContent = 'Отправка...';
+            
+            try {
+                const formData = new FormData(form);
+                
+                const response = await fetch('/partners/apply', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast('Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.');
+                    form.reset();
+                } else {
+                    showToast(result.error || 'Ошибка при отправке заявки', true);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Произошла ошибка при отправке. Попробуйте позже.', true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+    </script>
+</body>
+</html>

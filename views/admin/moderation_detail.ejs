@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детальная модерация - Вакация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>">
+    <style>
+        .mod-container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
+        
+        .mod-card { 
+            background: #fff; 
+            border-radius: 40px; 
+            padding: 60px; 
+            box-shadow: 0 30px 80px rgba(0,0,0,0.04); 
+            border: 1px solid #f1f5f9; 
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mod-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #635bff, #2d2a6e);
+        }
+
+        .mod-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            margin-bottom: 50px; 
+            padding-bottom: 30px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .mod-title-area h1 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 0 0 10px 0;
+            letter-spacing: -1px;
+        }
+
+        .mod-id-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .mod-section { margin-bottom: 50px; }
+        
+        .mod-section-title { 
+            font-family: 'Manrope', sans-serif;
+            font-size: 14px; 
+            font-weight: 800; 
+            color: #635bff; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            margin-bottom: 25px; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mod-section-title::after {
+            content: '';
+            height: 1px;
+            background: #e2e8f0;
+            flex: 1;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            background: #f8fafc;
+            padding: 20px 25px;
+            border-radius: 24px;
+            border: 1px solid #f1f5f9;
+            transition: 0.3s;
+        }
+
+        .info-item:hover {
+            background: #fff;
+            border-color: #635bff33;
+            box-shadow: 0 10px 20px rgba(99, 91, 255, 0.05);
+        }
+
+        .info-item-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .info-item-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+            word-break: break-word;
+        }
+
+        .description-box {
+            background: #fff;
+            padding: 35px;
+            border-radius: 30px;
+            border: 2px dashed #e2e8f0;
+            line-height: 1.8;
+            color: #475569;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .check-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .check-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 25px;
+            background: #f0fdf4;
+            border: 1px solid #dcfce7;
+            border-radius: 20px;
+            color: #166534;
+            font-weight: 700;
+        }
+
+        .check-card svg {
+            color: #22c55e;
+            flex-shrink: 0;
+        }
+
+        .action-panel {
+            background: #f8fafc;
+            padding: 40px;
+            border-radius: 32px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .vk-input-mod { 
+            width: 100%; 
+            padding: 20px 25px; 
+            border-radius: 20px; 
+            border: 2px solid #e2e8f0; 
+            background: #fff; 
+            font-family: 'Manrope', sans-serif; 
+            font-size: 16px; 
+            transition: 0.3s; 
+            box-sizing: border-box; 
+            resize: vertical;
+            margin-top: 15px;
+        }
+
+        .vk-input-mod:focus { 
+            border-color: #635bff; 
+            outline: none; 
+            box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.1); 
+        }
+
+        .template-select-mod {
+            width: 100%;
+            padding: 18px 25px;
+            border-radius: 20px;
+            border: 2px solid #e2e8f0;
+            font-family: 'Manrope', sans-serif;
+            background: #fff;
+            font-weight: 700;
+            color: #1e293b;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23635bff' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 25px center;
+            background-size: 18px;
+            transition: 0.3s;
+        }
+
+        .template-select-mod:hover { border-color: #635bff; }
+
+        .btn-group-mod { 
+            display: grid; 
+            grid-template-columns: 1.2fr 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 30px; 
+        }
+        
+        .btn-mod {
+            height: 65px;
+            border-radius: 22px;
+            font-weight: 800;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: #fff;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .btn-mod svg { width: 22px; height: 22px; stroke-width: 2.5px; }
+        
+        .btn-mod-approve { background: #635bff; box-shadow: 0 10px 25px rgba(99, 91, 255, 0.2); }
+        .btn-mod-approve:hover { background: #4f46e5; transform: translateY(-3px) scale(1.02); }
+        
+        .btn-mod-reject { background: #2d2a6e; box-shadow: 0 10px 25px rgba(45, 42, 110, 0.2); }
+        .btn-mod-reject:hover { background: #1e1b4b; transform: translateY(-3px) scale(1.02); }
+        
+        .btn-mod-changes { background: #e0dfff; color: #635bff; box-shadow: 0 10px 25px rgba(224, 223, 255, 0.2); }
+        .btn-mod-changes:hover { background: #fff; color: #635bff; transform: translateY(-3px) scale(1.02); border: 1px solid #635bff; }
+        .btn-mod-changes svg { color: #635bff; }
+
+        .status-badge-mod {
+            padding: 10px 20px; 
+            background: #fff7ed; 
+            color: #c2410c; 
+            border-radius: 15px; 
+            font-size: 13px; 
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #ffedd5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link-mod {
+            color: #64748b; 
+            font-weight: 700; 
+            text-decoration: none; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin-bottom: 35px;
+            transition: 0.3s;
+            padding: 12px 20px;
+            background: #fff;
+            border-radius: 15px;
+            border: 1px solid #f1f5f9;
+        }
+        .back-link-mod:hover { color: #635bff; border-color: #635bff33; transform: translateX(-5px); }
+
+        @media (max-width: 768px) {
+            .btn-group-mod { grid-template-columns: 1fr; }
+            .check-container { grid-template-columns: 1fr; }
+            .mod-card { padding: 30px; }
+            .mod-header { flex-direction: column; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <div class="mod-container">
+        <a href="/admin/moderation" class="back-link-mod">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Назад к списку
+        </a>
+
+        <div class="mod-card">
+            <div class="mod-header">
+                <div class="mod-title-area">
+                    <h1>Модерация <%= type === 'event' ? 'мероприятия' : 'предложения' %></h1>
+                    <span class="mod-id-badge">ID: <%= item.id %></span>
+                </div>
+                <div class="status-badge-mod">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    На модерации
+                </div>
+            </div>
+
+            <div class="mod-section">
+                <span class="mod-section-title">Основная информация</span>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-item-label">Название</span>
+                        <div class="info-item-value"><%= item.title %></div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Автор</span>
+                        <div class="info-item-value"><%= item.first_name %> <%= item.last_name %></div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Email</span>
+                        <div class="info-item-value"><%= item.email %></div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Телефон</span>
+                        <div class="info-item-value"><%= item.phone || '—' %></div>
+                    </div>
+                </div>
+            </div>
+
+            <% if (type === 'event') { %>
+            <div class="mod-section">
+                <span class="mod-section-title">Время и место</span>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-item-label">Дата проведения</span>
+                        <div class="info-item-value"><%= new Date(item.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) %></div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Локация</span>
+                        <div class="info-item-value"><%= item.location %></div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Участники</span>
+                        <div class="info-item-value">до <%= item.max_participants %> чел.</div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+            <div class="mod-section">
+                <span class="mod-section-title">Описание</span>
+                <div class="description-box">
+                    <%= item.description %>
+                </div>
+            </div>
+
+            <div class="mod-section">
+                <span class="mod-section-title">Автоматическая проверка</span>
+                <div class="check-container">
+                    <div class="check-card">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Текст проверен на мат
+                    </div>
+                    <div class="check-card">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Формат данных корректен
+                    </div>
+                </div>
+            </div>
+
+            <form action="<%= type === 'event' ? '/admin/moderation/update' : '/admin/moderation/proposal/update' %>" method="POST">
+                <input type="hidden" name="id" value="<%= item.id %>">
+                <div class="action-panel">
+                    <span class="mod-section-title">Решение модератора</span>
+                    
+                    <div style="margin-top: 20px;">
+                        <select class="template-select-mod" onchange="this.nextElementSibling.value = this.value">
+                            <option value="">Выберите быстрый ответ или напишите свой...</option>
+                            <option value="Неполное описание мероприятия. Добавьте подробности о программе и тайминге.">📝 Неполное описание</option>
+                            <option value="Некорректная дата или время проведения. Пожалуйста, проверьте актуальность.">📅 Ошибка в дате</option>
+                            <option value="Нарушение правил платформы (спам, нецензурная лексика или запрещенный контент).">🚫 Нарушение правил</option>
+                            <option value="Мероприятие не соответствует выбранной категории. Пожалуйста, измените её.">📂 Не та категория</option>
+                        </select>
+                        <textarea name="moderation_comment" rows="4" class="vk-input-mod" placeholder="Напишите комментарий для автора..."></textarea>
+                    </div>
+
+                    <div class="btn-group-mod">
+                        <button type="submit" name="status" value="<%= type === 'event' ? 'approved' : 'voting' %>" class="btn-mod btn-mod-approve">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Одобрить
+                        </button>
+                        <button type="submit" name="status" value="requires_changes" class="btn-mod btn-mod-changes">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            На правки
+                        </button>
+                        <button type="submit" name="status" value="rejected" class="btn-mod btn-mod-reject">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Отклонить
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>

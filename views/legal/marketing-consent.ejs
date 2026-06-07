@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Согласие на рекламные рассылки - Вакация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota:wght@400;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .legal-page { padding: 60px 0 100px; background: #f8fafc; min-height: 100vh; }
+        .legal-container { max-width: 900px; margin: 0 auto; background: #fff; padding: 60px; border-radius: 32px; box-shadow: 0 10px 40px rgba(0,0,0,0.03); }
+        .legal-header { margin-bottom: 40px; border-bottom: 2px solid #f1f5f9; padding-bottom: 30px; }
+        .legal-header h1 { font-family: 'Bellota', cursive; color: var(--primary-purple); font-size: 36px; margin-bottom: 15px; margin-top: 0; }
+        .legal-body { font-family: 'Manrope', sans-serif; color: #334155; line-height: 1.8; }
+        .legal-body h2 { font-family: 'Bellota', cursive; color: #1e293b; font-size: 22px; margin: 35px 0 15px; }
+        .legal-body p { margin-bottom: 15px; }
+        .legal-body ul { margin-bottom: 20px; padding-left: 20px; }
+        .legal-body li { margin-bottom: 8px; }
+        .legal-body a { color: var(--primary-purple); text-decoration: none; font-weight: 600; }
+        .legal-body a:hover { text-decoration: underline; }
+        .consent-box { margin-top: 40px; padding: 30px; background: #f9fafb; border-radius: 20px; border: 1px solid #e5e7eb; }
+        @media (max-width: 768px) {
+            .legal-container { padding: 30px; border-radius: 0; }
+            .legal-header h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <main class="legal-page">
+        <div class="legal-container">
+            <div class="legal-header">
+                <h1>Согласие на получение рекламных и информационных рассылок</h1>
+            </div>
+            <div class="legal-body">
+                <p>Я даю согласие на получение информационных и рекламных сообщений от платформы «Вакация» и её партнёров на указанный мной адрес электронной почты.</p>
+                
+                <p><strong>Я понимаю, что:</strong></p>
+                <ul>
+                    <li>могу отписаться от рассылки в любой момент, нажав на ссылку «Отписаться» внизу любого письма;</li>
+                    <li>могу отозвать согласие, написав на <a href="mailto:hello@vakatsiya.ru">hello@vakatsiya.ru</a>;</li>
+                    <li>отказ от рассылки не влияет на возможность использования основных функций платформы.</li>
+                </ul>
+    
+            </div>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>
+</body>
+</html>

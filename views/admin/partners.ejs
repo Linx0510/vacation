@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Партнеры - Админ-панель | Вакация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .admin-layout { 
+            display: grid; 
+            grid-template-columns: 280px 1fr; 
+            gap: 30px; 
+            padding: 40px 0; 
+            align-items: start;
+        }
+        
+        .admin-sidebar { 
+            background: #fff; 
+            border-radius: 24px; 
+            padding: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); 
+            position: sticky; 
+            top: 100px;
+        }
+        
+        .admin-menu { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 5px; 
+        }
+        
+        .menu-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            padding: 12px 20px; 
+            border-radius: 12px; 
+            text-decoration: none; 
+            color: #64748b; 
+            font-family: 'Manrope', sans-serif; 
+            font-weight: 600; 
+            font-size: 15px; 
+            transition: 0.3s; 
+        }
+        
+        .menu-item svg { 
+            width: 18px; 
+            height: 18px; 
+            stroke-width: 2px; 
+            flex-shrink: 0;
+        }
+        
+        .menu-item:hover { 
+            color: #635bff; 
+            background: #f8fafc; 
+        }
+        
+        .menu-item.active { 
+            background: #635bff; 
+            color: #fff; 
+            box-shadow: 0 4px 12px rgba(99, 91, 255, 0.25); 
+        }
+        
+        .admin-content { 
+            background: #fff; 
+            border-radius: 24px; 
+            padding: 40px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); 
+            min-height: 500px;
+        }
+        
+        .section-title { 
+            font-size: 28px; 
+            font-weight: 800; 
+            margin-bottom: 25px; 
+            color: #1e293b; 
+        }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+        
+        .partner-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
+        }
+        
+        .partner-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-color: #e2e8f0;
+        }
+        
+        .partner-company {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .partner-info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        
+        .partner-info-icon {
+            width: 20px;
+            color: #635bff;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .partner-info-text {
+            flex: 1;
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        
+        .partner-info-text strong {
+            color: #1e293b;
+            font-weight: 700;
+        }
+        
+        .partner-date {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .empty-state { 
+            text-align: center; 
+            padding: 80px 20px; 
+            background: #f8fafc; 
+            border-radius: 20px; 
+            color: #94a3b8;
+        }
+        
+        .empty-state svg {
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .empty-state small {
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+        
+        @media (max-width: 992px) { 
+            .admin-layout { grid-template-columns: 1fr; } 
+            .admin-sidebar { position: static; } 
+        }
+        
+        @media (max-width: 768px) {
+            .admin-content { padding: 20px; }
+            .section-title { font-size: 22px; }
+            .partners-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <div class="container">
+        <div class="admin-layout">
+            <aside class="admin-sidebar">
+                <div class="admin-menu">
+                    <a href="/admin/dashboard" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                        Дашборд
+                    </a>
+                    <a href="/admin/moderation" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Модерация
+                    </a>
+                    <a href="/admin/reports" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg>
+                        Жалобы на отзывы
+                    </a>
+                    <a href="/admin/users" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Пользователи
+                    </a>
+                    <a href="/admin/partners" class="menu-item active">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                        Партнеры
+                    </a>
+                    <a href="/admin/faq" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        Входящие вопросы
+                    </a>
+                    <a href="/user/profile?tab=notifications" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        Уведомления
+                    </a>
+                </div>
+            </aside>
+            <main class="admin-content">                
+                <% if (partners && partners.length > 0) { %>
+                    <div class="partners-grid">
+                        <% partners.forEach(partner => { 
+                            let contactData = {};
+                            try {
+                                if (partner.contact_info && typeof partner.contact_info === 'string') {
+                                    contactData = JSON.parse(partner.contact_info);
+                                } else if (partner.contact_info && typeof partner.contact_info === 'object') {
+                                    contactData = partner.contact_info;
+                                }
+                            } catch(e) {}
+                            
+                            let companyName = partner.company_name || partner.name;
+                            let contactName = contactData.contact_name || partner.contact_name;
+                            let phone = contactData.phone || partner.phone;
+                            let city = contactData.city || partner.city;
+                            let venueType = contactData.venue_type;
+                            
+                            if (!companyName && !contactName && !phone && !city) {
+                                companyName = 'Заявка из формы';
+                                contactName = partner.contact_name;
+                                phone = partner.phone;
+                            }
+                        %>
+                            <div class="partner-card">
+                                <div class="partner-company">
+                                    <%= companyName || '—' %>
+                                </div>
+                                
+                                <% if (contactName) { %>
+                                <div class="partner-info-row">
+                                    <div class="partner-info-icon">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                    </div>
+                                    <div class="partner-info-text">
+                                        <strong><%= contactName %></strong>
+                                    </div>
+                                </div>
+                                <% } %>
+                                
+                                <% if (phone) { %>
+                                <div class="partner-info-row">
+                                    <div class="partner-info-icon">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="partner-info-text">
+                                        <%= phone %>
+                                    </div>
+                                </div>
+                                <% } %>
+                                
+                                <% if (city) { %>
+                                <div class="partner-info-row">
+                                    <div class="partner-info-icon">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                            <circle cx="12" cy="10" r="3"></circle>
+                                        </svg>
+                                    </div>
+                                    <div class="partner-info-text">
+                                        <%= city %>
+                                    </div>
+                                </div>
+                                <% } %>
+                                
+                                <% if (venueType) { %>
+                                <div class="partner-info-row">
+                                    <div class="partner-info-icon">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                                        </svg>
+                                    </div>
+                                    <div class="partner-info-text">
+                                        <%= venueType %>
+                                    </div>
+                                </div>
+                                <% } %>
+                                
+                                <div class="partner-date">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    <%= partner.created_at ? new Date(partner.created_at).toLocaleString('ru-RU') : '—' %>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <p>Заявок от партнеров пока нет</p>
+                        <small>Новые заявки появятся здесь после заполнения формы</small>
+                    </div>
+                <% } %>
+            </main>
+        </div>
+    </div>
+    <%- include('../partials/footer') %>
+</body>
+</html>

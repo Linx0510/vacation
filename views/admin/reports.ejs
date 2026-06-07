@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Жалобы на отзывы - Админ-панель | Вакация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>">
+    <style>
+        .admin-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; padding: 40px 0; align-items: start; }
+        .admin-sidebar { background: #fff; border-radius: 24px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); position: sticky; top: 100px; }
+        .admin-menu { display: flex; flex-direction: column; gap: 5px; }
+        .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-radius: 12px; text-decoration: none; color: #64748b; font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 15px; transition: 0.3s; }
+        .menu-item svg { width: 18px; height: 18px; stroke-width: 2px; }
+        .menu-item:hover { color: #635bff; background: #f8fafc; }
+        .menu-item.active { background: #635bff; color: #fff; box-shadow: 0 4px 12px rgba(99, 91, 255, 0.25); }
+        .admin-content { background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); min-height: 500px; }
+        .section-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; color: #1e293b; }
+        .section-subtitle { color: #64748b; margin-bottom: 30px; font-size: 14px; }
+        .report-card { background: #fff; border-radius: 20px; margin-bottom: 24px; border: 1px solid #edf2f7; }
+        .report-card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: #fafbfc; border-bottom: 1px solid #edf2f7; flex-wrap: wrap; gap: 12px; }
+        .reporter-info { display: flex; align-items: center; gap: 12px; }
+        .reporter-avatar { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; background: #f0f0ff; }
+        .reporter-avatar-placeholder { width: 40px; height: 40px; background: #f0f0ff; color: #635bff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+        .reporter-name { font-weight: 700; color: #1e293b; font-size: 15px; }
+        .report-date { font-size: 12px; color: #94a3b8; display: flex; align-items: center; gap: 6px; }
+        .report-card-body { padding: 20px 24px; }
+        .reason-block { background: #f8fafc; border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; display: inline-block; }
+        .reason-label { font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+        .reason-text { font-size: 14px; font-weight: 600; color: #1e293b; }
+        .review-block { background: #f8fafc; border-radius: 16px; padding: 20px; margin: 20px 0; }
+        .review-author { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .review-author-avatar { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; background: #e0e7ff; }
+        .review-author-avatar-placeholder { width: 40px; height: 40px; background: #e0e7ff; color: #4338ca; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+        .review-author-name { font-weight: 700; color: #1e293b; font-size: 14px; }
+        .event-link { font-size: 12px; color: #635bff; text-decoration: none; background: #e0dfff; padding: 4px 12px; border-radius: 20px; }
+        .review-text { color: #475569; line-height: 1.6; font-size: 14px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #e2e8f0; }
+        .action-form { margin-top: 20px; padding-top: 20px; border-top: 1px solid #edf2f7; }
+        .action-textarea { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: 'Manrope', sans-serif; font-size: 13px; resize: vertical; }
+        .action-buttons { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+        .btn-delete { background: #fee2e2; color: #dc2626; padding: 8px 20px; border-radius: 30px; border: none; font-weight: 600; cursor: pointer; font-size: 13px; }
+        .btn-reject { background: #f1f5f9; color: #64748b; padding: 8px 20px; border-radius: 30px; border: none; font-weight: 600; cursor: pointer; font-size: 13px; }
+        .empty-state { text-align: center; padding: 60px 40px; background: #f8fafc; border-radius: 20px; }
+        @media (max-width: 992px) { .admin-layout { grid-template-columns: 1fr; } .admin-sidebar { position: static; } }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <div class="container">
+        <div class="admin-layout">
+            <aside class="admin-sidebar">
+                <div class="admin-menu">
+                    <a href="/admin/dashboard" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                        Дашборд
+                    </a>
+                    <a href="/admin/moderation" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Модерация
+                    </a>
+                    <a href="/admin/reports" class="menu-item active">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg>
+                        Жалобы на отзывы
+                    </a>
+                    <a href="/admin/users" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Пользователи
+                    </a>
+                    <a href="/admin/partners" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                        Партнеры
+                    </a>
+                    <a href="/admin/faq" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        Входящие вопросы
+                    </a>
+                    <a href="/user/profile?tab=notifications" class="menu-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        Уведомления
+                    </a>
+                </div>
+            </aside>
+            <main class="admin-content">
+                <% if (reports && reports.length > 0) { %>
+                    <% reports.forEach(report => { %>
+                        <div class="report-card">
+                            <div class="report-card-header">
+                                <div class="reporter-info">
+                                    <% if (report.reporter_avatar_url) { %>
+                                        <img src="<%= report.reporter_avatar_url.startsWith('/') ? report.reporter_avatar_url : '/' + report.reporter_avatar_url %>" class="reporter-avatar" alt="Аватар">
+                                    <% } else { %>
+                                        <div class="reporter-avatar-placeholder"><%= (report.reporter_first_name || 'П')[0].toUpperCase() %></div>
+                                    <% } %>
+                                    <div>
+                                        <div class="reporter-name"><%= report.reporter_first_name || 'Пользователь' %> <%= report.reporter_last_name || '' %></div>
+                                        <div style="font-size: 12px; color: #94a3b8;"><%= report.reporter_email %></div>
+                                    </div>
+                                </div>
+                                <div class="report-date">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    <%= new Date(report.created_at).toLocaleDateString('ru-RU') %>
+                                </div>
+                            </div>
+                            <div class="report-card-body">
+                                <div class="reason-block">
+                                    <div class="reason-label">Причина жалобы</div>
+                                    <div class="reason-text"><%= report.reason %></div>
+                                </div>
+                                <div class="review-block">
+                                    <div class="review-author">
+                                        <% if (report.author_avatar_url) { %>
+                                            <img src="<%= report.author_avatar_url.startsWith('/') ? report.author_avatar_url : '/' + report.author_avatar_url %>" class="review-author-avatar" alt="Аватар автора">
+                                        <% } else { %>
+                                            <div class="review-author-avatar-placeholder"><%= (report.author_first_name || 'А')[0].toUpperCase() %></div>
+                                        <% } %>
+                                        <div>
+                                            <div class="review-author-name"><%= report.author_first_name %> <%= report.author_last_name %></div>
+                                            <% if (report.event_title) { %>
+                                                <a href="/events/<%= report.event_id %>" class="event-link">Мероприятие: <%= report.event_title %></a>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="review-text"><%= report.review_text %></div>
+                                </div>
+                                <% if (report.status === 'pending') { %>
+                                    <form action="/admin/reports/update" method="POST" class="action-form">
+                                        <input type="hidden" name="reportId" value="<%= report.id %>">
+                                        <textarea name="admin_comment" class="action-textarea" rows="3" placeholder="Укажите причину решения..." required></textarea>
+                                        <div class="action-buttons">
+                                            <button type="submit" name="status" value="reviewed" class="btn-delete" onclick="return confirm('Вы уверены, что хотите удалить этот отзыв?')">Удалить отзыв</button>
+                                            <button type="submit" name="status" value="rejected" class="btn-reject">Отклонить жалобу</button>
+                                        </div>
+                                    </form>
+                                <% } else { %>
+                                    <div style="background: #f1f5f9; padding: 12px; border-radius: 12px; margin-top: 16px;">
+                                        <span style="font-size: 13px; color: #64748b;">
+                                            <% if (report.status === 'reviewed') { %>
+                                                ✅ Жалоба принята, отзыв удален
+                                            <% } else { %>
+                                                ❌ Жалоба отклонена
+                                            <% } %>
+                                            <% if (report.admin_comment) { %>
+                                                <br>Комментарий: <%= report.admin_comment %>
+                                            <% } %>
+                                        </span>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="empty-state">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1"><path d="M12 8v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg>
+                        <div style="font-size: 16px; font-weight: 600; margin-top: 16px;">Нет жалоб</div>
+                        <div style="font-size: 14px; margin-top: 8px; color: #94a3b8;">Жалобы от пользователей пока не поступали</div>
+                    </div>
+                <% } %>
+            </main>
+        </div>
+    </div>
+    <%- include('../partials/footer') %>
+</body>
+</html>

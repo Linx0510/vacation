@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .accent-underline {
+            color: inherit;
+            position: relative;
+            display: inline-block;
+        }
+        .accent-underline svg {
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            pointer-events: none;
+        }
+        .bridge-section .accent-underline {
+            color: #000;
+        }
+        .bridge-section .accent-underline svg path {
+            stroke: #fff;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-new">
+            <div class="hero-glass-bg">
+                <div class="glass-circle gc1"></div>
+                <div class="glass-circle gc2"></div>
+                <div class="glass-circle gc3"></div>
+            </div>
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-text">
+                        <div class="hero-badges">
+                            <span class="badge">Всем своим</span>
+                            <span class="badge outline">Организаторам</span>
+                        </div>
+                        <h1>Твой голос <br> меняет&nbsp;афишу</h1>
+                        <p>Платформа, где организаторы находят свою аудиторию, а&nbsp;ты находишь самые вдохновляющие события.</p>
+                        <div class="hero-btns">
+                            <a href="/events" class="btn-dark">Найти мероприятие</a>
+                            <a href="/auth/register" class="btn-light-purple">Стать организатором</a>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="dynamic-card-stack">
+                            <div class="card c1">
+                                <img src="/images/static/cat-1.svg" class="card-img" alt="Category 1">
+                                <div class="card-content">
+                                    <div class="line l1"></div>
+                                    <div class="line l2"></div>
+                                </div>
+                            </div>
+                            <div class="card c2">
+                                <img src="/images/static/cat-2.svg" class="card-img" alt="Category 2">
+                                <div class="card-content">
+                                    <div class="line l1"></div>
+                                    <div class="line l2"></div>
+                                </div>
+                            </div>
+                            <div class="card c3">
+                                <img src="/images/static/cat-3.svg" class="card-img" alt="Category 3">
+                                <div class="card-content">
+                                    <div class="line l1"></div>
+                                    <div class="line l2"></div>
+                                </div>
+                            </div>
+                            <div class="main-orb">
+                                <div class="orb-inner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mood Section -->
+        <section class="mood-section container">
+            <div class="section-header">
+                <div class="title-group">
+                    <h2>Выбирай <span class="accent-underline" style="font-family: 'Bellota', cursive;">настроение<svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0,10 Q50,0 100,10" stroke="var(--primary-purple)" stroke-width="4" fill="none" stroke-linecap="round"/></svg></span></h2>
+                    <p>От&nbsp;деловых встреч до&nbsp;безумных вечеринок&nbsp;— мы&nbsp;собрали всё, что происходит в&nbsp;городе.</p>
+                </div>
+                <a href="/events" class="link-more">Перейти к Мероприятиям <span class="arrow">↗</span></a>
+            </div>
+
+            <div class="mood-grid">
+                <div class="mood-card">
+                    <div class="mood-img-box purple">
+                        <img src="/images/static/cat-1.svg" alt="Сезонные">
+                    </div>
+                    <div class="mood-info">
+                        <h3>Сезонные</h3>
+                        <p>Лето на пороге</p>
+                    </div>
+                </div>
+                <div class="mood-card">
+                    <div class="mood-img-box purple-light">
+                        <img src="/images/static/cat-2.svg" alt="Тематические">
+                    </div>
+                    <div class="mood-info">
+                        <h3>Тематические</h3>
+                        <p>Попади в историю</p>
+                    </div>
+                </div>
+                <div class="mood-card">
+                    <div class="mood-img-box purple-soft">
+                        <img src="/images/static/cat-3.svg" alt="Мастер-классы">
+                    </div>
+                    <div class="mood-info">
+                        <h3>Мастер-классы</h3>
+                        <p>Новое за два</p>
+                    </div>
+                </div>
+                <div class="mood-card">
+                    <div class="mood-img-box purple-pale">
+                        <img src="/images/static/cat-4.svg" alt="Выездные">
+                    </div>
+                    <div class="mood-info">
+                        <h3>Выездные</h3>
+                        <p>Ближе к лесу</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Platform Section -->
+        <section class="about-platform">
+            <div class="container">
+                <div class="about-platform-grid">
+                    <div class="about-platform-text">
+                        <h2>Вакация&nbsp;— это</h2>
+                        <p>сообщество, которое помогает талантливым организаторам не&nbsp;разориться на&nbsp;рекламе, а&nbsp;гостям&nbsp;— найти событие по&nbsp;душе без переплат. Мы&nbsp;не&nbsp;продаем билеты, мы&nbsp;даем возможность.</p>
+                    </div>
+                    <div class="about-platform-image">
+                        <img src="/images/static/about-illustration.svg" alt="About Illustration">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Profile Section -->
+        <section class="cta-profile">
+            <div class="cta-profile-box">
+                <img src="/images/static/cta-line-top.svg" class="cta-line top" alt="Line Top">
+                <img src="/images/static/cta-line-bottom.svg" class="cta-line bottom" alt="Line Bottom">
+                <div class="container">
+                    <div class="cta-profile-content">
+                        <div class="cta-profile-text">
+                            <h2>Хочешь то, что любишь?</h2>
+                            <p>Заполни профиль&nbsp;— и&nbsp;мы&nbsp;будем показывать события по&nbsp;твоим интересам. Без спама, только то, что реально зайдет.</p>
+                        </div>
+                        <div class="cta-profile-action">
+                            <a href="/user/profile" class="btn-dark-purple">Заполнить профиль</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bridge Section -->
+        <section class="bridge-section container">
+            <div class="bridge-grid">
+                <div class="bridge-text-fixed">
+                    <h2>Вакация&nbsp;— мост <br> между <span class="accent-underline" style="font-family: 'Bellota', cursive; color: #1a1a1a;">идеей<svg viewBox="0 0 100 12" preserveAspectRatio="none" style="display: block !important;"><path d="M0,10 Q50,0 100,10" stroke="#635bff" stroke-width="4" fill="none" stroke-linecap="round"/></svg></span> <br> и&nbsp;<span class="accent-underline" style="font-family: 'Bellota', cursive; color: #1a1a1a;">эмоцией<svg viewBox="0 0 100 12" preserveAspectRatio="none" style="display: block !important;"><path d="M0,10 Q50,0 100,10" stroke="#635bff" stroke-width="4" fill="none" stroke-linecap="round"/></svg></span></h2>
+                </div>
+                <div class="bridge-cards-scroll">
+                    <div class="info-card purple-card">
+                        <h3>Для гостей</h3>
+                        <ul class="info-list">
+                            <li>
+                                <div class="info-icon-box"><img src="/images/static/icon-search.svg" alt=""></div>
+                                <p>ищите события по&nbsp;фильтрам</p>
+                            </li>
+                            <li>
+                                <div class="info-icon-box"><img src="/images/static/icon-heart.svg" alt=""></div>
+                                <p>добавляйте в&nbsp;избранное, чтобы не&nbsp;потерять</p>
+                            </li>
+                            <li>
+                                <div class="info-icon-box"><img src="/images/static/icon-camera.svg" alt=""></div>
+                                <p>делитесь фото и&nbsp;видео с&nbsp;прошедших тусовок, попадите в&nbsp;ленту отзывов</p>
+                            </li>
+                        </ul>
+                        <a href="/events" class="btn-outline-white">Найти впечатление</a>
+                    </div>
+
+                    <div class="info-card purple-dark-card">
+                        <h3>Для организаторов</h3>
+                        <ul class="info-list">
+                            <li>
+                                <div class="info-icon-box"><img src="/images/static/icon-plus.svg" alt=""></div>
+                                <p>создайте мероприятия в&nbsp;личном кабинете</p>
+                            </li>
+                            <li>
+                                <div class="info-icon-box"><img src="/images/static/icon-mod.svg" alt=""></div>
+                                <p>оставьте на&nbsp;модерацию <br> (займет пару часов)</p>
+                            </li>
+                            <li>
+                                <div class="info-icon-box"><img src="/images/static/icon-audience.svg" alt=""></div>
+                                <p>получите живую аудиторию и&nbsp;заявки</p>
+                            </li>
+                        </ul>
+                        <a href="/auth/register" class="btn-outline-white">Запустить мероприятие</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proposal Section -->
+        <section class="proposal-section container">
+            <div class="section-header">
+                <div class="title-group">
+                    <h2>Не&nbsp;нашел куда пойти? <br> <span class="accent-underline" style="font-family: 'Bellota', cursive;">Создай запрос!<svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0,10 Q50,0 100,10" stroke="var(--primary-purple)" stroke-width="4" fill="none" stroke-linecap="round"/></svg></span></h2>
+                </div>
+                <a href="/proposals" class="link-more">Перейти к Предложениям <span class="arrow">↗</span></a>
+            </div>
+            <div class="proposal-grid">
+                <div class="proposal-visual">
+                    <img src="/images/static/proposal-illustration.svg" alt="Proposal Illustration">
+                    <% if (user) { %>
+                        <a href="/proposals" class="btn-dark btn-proposal-left">Оставить идею</a>
+                    <% } else { %>
+                        <a href="/auth/register" class="btn-dark btn-proposal-left">Оставить идею</a>
+                    <% } %>
+                </div>
+                <div class="proposal-content">
+                    <p class="p-highlight">Организаторы не&nbsp;всегда знают, что вы&nbsp;хотите. Оставьте свою идею на&nbsp;странице «Предложения».</p>
+                    <p>Хотите костюмированную 90-х, ночной кинотеатр <br>или мастер-класс по&nbsp;сыру? А&nbsp;может, фестиваль пузырей <br>или сплав с&nbsp;шашлыками?</p>
+                    <p>Если идея наберет популярность, организаторы возьмут ее&nbsp;в&nbsp;работу!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Grid Section -->
+        <section class="features-grid-section container">
+            <div class="section-header">
+                <div class="title-group">
+                    <h2>Мероприятия, <br> которые <span class="accent-underline" style="font-family: 'Bellota', cursive !important;">запоминаются<svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0,10 Q50,0 100,10" stroke="var(--primary-purple)" stroke-width="4" fill="none" stroke-linecap="round"/></svg></span></h2>
+                    <p>С&nbsp;нами&nbsp;— качественнее и&nbsp;эффективнее.</p>
+                </div>
+            </div>
+            <div class="features-bento">
+                <div class="feature-card f1">
+                    <h3>Живая аудитория</h3>
+                    <p>Ваше мероприятие увидят те, кто уже ищет движ. Никаких заброшенных групп и&nbsp;пустых рассылок</p>
+                </div>
+                <div class="feature-card f2">
+                    <h3>Идеи <br> от&nbsp;пользователя</h3>
+                    <p>Заходите в&nbsp;«Предложения» и&nbsp;берите в&nbsp;работу то, что действительно хотят ваши&nbsp;гости.</p>
+                    <a href="/proposals" class="link-inline">Перейти к&nbsp;Предложениям <span class="arrow">→</span></a>
+                </div>
+                <div class="feature-card f3">
+                    <h3>Чистая лента</h3>
+                    <p>Никакого спама и&nbsp;левых событий&nbsp;— только качественные ивенты приходят в&nbsp;ленту.</p>
+                </div>
+                <div class="feature-card f4 purple-bonus">
+                    <h3>Бонус</h3>
+                    <p>Первые 3&nbsp;мероприятия&nbsp;— <strong>без очереди модерации.</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="contact-section">
+            <div class="contact-box-custom">
+                <div class="container">
+                    <div class="contact-grid">
+                        <div class="contact-info-side">
+                            <h2>Остались <br> вопросы?</h2>
+                            <p>Заполни форму&nbsp;— мы&nbsp;перезвоним <br> и&nbsp;с&nbsp;радостью поможем!</p>
+                            <div class="contact-illustration">
+                                <img src="/images/static/help-illustration.svg" alt="Contact Illustration">
+                            </div>
+                        </div>
+                        <div class="contact-form-side">
+                            <form id="contact-form" class="main-contact-form" action="/contact/send" method="POST">
+                                <input type="hidden" name="source" value="Главная страница (Остались вопросы?)">
+                                <div class="form-group-light">
+                                    <label for="name">Имя</label>
+                                    <input type="text" id="name" name="name" placeholder="Ваше имя" required>
+                                </div>
+                                <div class="form-group-light">
+                                    <label for="phone">Номер телефона</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required>
+                                </div>
+                                <div class="form-group-light">
+                                    <label for="message">Комментарий/вопрос</label>
+                                    <textarea id="message" name="message" rows="4" placeholder="Ваш вопрос или комментарий"></textarea>
+                                </div>
+                                <div class="form-checkbox">
+                                    <input type="checkbox" id="consent" required>
+                                    <label for="consent">Я даю согласие на обработку персональных данных для связи со мной в соответствии с <a href="/privacy">Политикой конфиденциальности</a>.</label>
+                                </div>
+                                <button type="submit" class="btn-dark-submit">Отправить</button>
+                            </form>
+                        </div>
+
+                        <div id="toast-notification" style="display: none; position: fixed; bottom: 30px; right: 30px; background: var(--primary-purple); color: #fff; padding: 20px 32px; border-radius: 24px; box-shadow: 0 20px 50px rgba(99, 91, 255, 0.4); z-index: 10001; align-items: center; gap: 16px; transform: translateX(120%); transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); border: 2px solid rgba(255,255,255,0.2);">
+                            <div style="background: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-purple)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-weight: 800; font-size: 17px; color: #fff;">Успешно!</span>
+                                <span style="font-weight: 600; font-size: 14px; color: rgba(255,255,255,0.9);">Сообщение отправлено</span>
+                            </div>
+                        </div>
+
+                        <script src="https://unpkg.com/imask"></script>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Маска для телефона
+                                try {
+                                    const phoneElement = document.getElementById('phone');
+                                    if (phoneElement && typeof IMask !== 'undefined') {
+                                        const maskOptions = {
+                                            mask: '+{7} (000) 000-00-00'
+                                        };
+                                        IMask(phoneElement, maskOptions);
+                                    }
+                                } catch (e) {
+                                    console.warn('IMask not loaded:', e);
+                                }
+
+                                const contactForm = document.getElementById('contact-form');
+                                if (contactForm) {
+                                    contactForm.addEventListener('submit', async function(e) {
+                                        e.preventDefault();
+                                        
+                                        const formData = new FormData(this);
+                                        const data = {};
+                                        formData.forEach((value, key) => {
+                                            data[key] = value;
+                                        });
+                                        
+                                        // Преобразуем в URL-encoded строку для совместимости с bodyParser.urlencoded
+                                        const urlEncodedData = new URLSearchParams();
+                                        for (const [key, value] of Object.entries(data)) {
+                                            urlEncodedData.append(key, value);
+                                        }
+                                        
+                                        try {
+                                            // Прямая отправка формы через fetch
+                                            const response = await fetch('/contact/send', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                                    'X-Requested-With': 'XMLHttpRequest'
+                                                },
+                                                body: urlEncodedData.toString()
+                                            });
+                                            
+                                            if (response.ok) {
+                                                // Показываем наше красивое уведомление (функция из header.ejs)
+                                                const toast = document.createElement('div');
+                                                toast.className = 'toast-notification success';
+                                                toast.innerHTML = `
+                                                    <div class="toast-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                                    <div class="toast-content">Сообщение успешно отправлено!</div>
+                                                    <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+                                                `;
+                                                document.body.appendChild(toast);
+                                                this.reset();
+                                                
+                                                setTimeout(() => {
+                                                    toast.style.transform = 'translateX(120%)';
+                                                    toast.style.opacity = '0';
+                                                    toast.style.transition = '0.5s ease';
+                                                    setTimeout(() => toast.remove(), 500);
+                                                }, 5000);
+                                            } else {
+                                                alert('Ошибка при отправке: ' + response.status);
+                                            }
+                                        } catch (error) {
+                                            console.error('Error:', error);
+                                            alert('Произошла ошибка: ' + error.message);
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section container">
+            <div class="faq-grid">
+                <div class="faq-title">
+                    <h2>Вопрос-ответ</h2>
+                </div>
+                <div class="faq-list-main">
+                    <div class="faq-accordion-item">
+                        <div class="faq-question-box">
+                            <h3>Когда и где пройдут мероприятия?</h3>
+                            <span class="faq-arrow">↓</span>
+                        </div>
+                        <div class="faq-answer-box">
+                            <p>Площадки разные: от лофтов в центре до загородных баз отдыха. Точный адрес всегда указан на странице каждого события.</p>
+                        </div>
+                    </div>
+                    <div class="faq-accordion-item">
+                        <div class="faq-question-box">
+                            <h3>Есть ли дресс-код?</h3>
+                            <span class="faq-arrow">↓</span>
+                        </div>
+                        <div class="faq-answer-box">
+                            <p>Если мероприятие предполагает особый стиль или тематику, мы обязательно указываем это в описании события. В остальных случаях — приходите в том, в чем вам комфортно. Главное — ваше настроение.</p>
+                        </div>
+                    </div>
+                    <div class="faq-accordion-item">
+                        <div class="faq-question-box">
+                            <h3>Как добраться до площадки?</h3>
+                            <span class="faq-arrow">↓</span>
+                        </div>
+                        <div class="faq-answer-box">
+                            <p>После регистрации на событие мы присылаем подробную схему проезда, точный адрес и контакты организатора, чтобы вы не заблудились. Если площадка сложная — добавляем ориентиры и фото входа.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

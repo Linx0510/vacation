@@ -1,0 +1,136 @@
+<header class="main-header">
+    <nav class="container">
+        <div class="logo">
+            <a href="/">
+                <div class="logo-wrapper">
+                    <span class="logo-v-shape">В</span>
+                    <span class="logo-text">акация</span>
+                </div>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/" class="<%= path === '/' ? 'active' : '' %>">Главная</a></li>
+            <li><a href="/events" class="<%= path === '/events' ? 'active' : '' %>">Мероприятия</a></li>
+            <li><a href="/proposals" class="<%= path === '/proposals' ? 'active' : '' %>">Предложения</a></li>
+            
+            <% if (!user) { %>
+                <li><a href="/become-organizer" class="<%= path === '/become-organizer' ? 'active' : '' %>">Организаторам</a></li>
+            <% } else if (user.role === 'organizer') { %>
+                <li><a href="/organizer/dashboard" class="<%= path.startsWith('/organizer') ? 'active' : '' %>">Дашборд</a></li>
+            <% } else if (user.role === 'admin') { %>
+                <li><a href="/admin/dashboard" class="<%= path.startsWith('/admin') ? 'active' : '' %>">Админ-панель</a></li>
+            <% } %>
+        </ul>
+        <div class="user-menu">
+            <% if (user) { %>
+                <div class="user-info-nav">
+                    <a href="/user/profile" class="nav-avatar-link" title="Личный кабинет">
+                        <% if (user.avatar) { %>
+                            <img src="<%= user.avatar %>" alt="Профиль" class="nav-avatar-img">
+                        <% } else { %>
+                            <div class="nav-avatar-letter">
+                                <%= (user.first_name ? user.first_name[0] : (user.email ? user.email[0] : 'U')).toUpperCase() %>
+                            </div>
+                        <% } %>
+                    </a>
+                    <a href="/auth/logout" class="btn-logout-nav">Выйти</a>
+                </div>
+            <% } else { %>
+                <a href="/auth/login" class="btn-login">Войти</a>
+                <a href="/auth/register" class="btn-register">Зарегистрироваться</a>
+            <% } %>
+        </div>
+    </nav>
+</header>
+
+<% if (success && success.length > 0 && !path.includes('/auth/')) { %>
+    <div class="toast-notification success">
+        <div class="toast-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <div class="toast-content">
+            <%= success %>
+        </div>
+        <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+    </div>
+<% } %>
+
+<% if (error && error.length > 0 && !path.includes('/auth/')) { %>
+    <div class="toast-notification danger">
+        <div class="toast-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+        <div class="toast-content">
+            <%= error %>
+        </div>
+        <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+    </div>
+<% } %>
+
+<style>
+    .toast-notification {
+        position: fixed;
+        top: 100px;
+        right: 30px;
+        background: #635bff;
+        color: #fff;
+        padding: 16px 24px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(99, 91, 255, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        z-index: 9999;
+        min-width: 300px;
+        max-width: 450px;
+        animation: slideInRight 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    .toast-notification.danger {
+        background: #ef4444;
+        box-shadow: 0 15px 35px rgba(239, 68, 68, 0.3);
+    }
+    .toast-icon {
+        width: 32px;
+        height: 32px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .toast-content {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        flex: 1;
+    }
+    .toast-close {
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.7);
+        font-size: 22px;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        transition: 0.2s;
+    }
+    .toast-close:hover { color: #fff; }
+
+    @keyframes slideInRight {
+        from { transform: translateX(120%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+</style>
+
+<script>
+    // Автоматическое скрытие через 5 секунд
+    document.querySelectorAll('.toast-notification').forEach(toast => {
+        setTimeout(() => {
+            toast.style.transform = 'translateX(120%)';
+            toast.style.opacity = '0';
+            toast.style.transition = '0.5s ease';
+            setTimeout(() => toast.remove(), 500);
+        }, 5000);
+    });
+</script>

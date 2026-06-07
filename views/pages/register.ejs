@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Вакация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>">
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+        h1, h2, h3 { font-family: 'Bellota', cursive; }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <main class="auth-page container" style="padding: 40px 20px; display: flex; justify-content: center; align-items: center; min-height: 70vh;">
+        <div class="auth-container glass-card animate-fade-in" style="width: 100%; max-width: 500px; padding: 40px; background: #fff;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; text-align: center;">Регистрация</h1>
+            <p class="auth-subtitle" style="color: #64748b; text-align: center; margin-bottom: 40px;">Присоединяйтесь к сообществу Вакация</p>
+            
+            <% if (error && error.length > 0) { %>
+                <div class="alert alert-danger" style="background: #fee2e2; color: #ef4444; padding: 15px; border-radius: 12px; margin-bottom: 25px; font-weight: 600; font-size: 14px; text-align: center;">
+                    <%= error %>
+                </div>
+            <% } %>
+            
+            <form action="/auth/register" method="POST" class="vk-form">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Имя</label>
+                        <input type="text" name="first_name" placeholder="Иван" required style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; font-family: inherit;">
+                    </div>
+                    <div class="form-group">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Фамилия</label>
+                        <input type="text" name="last_name" placeholder="Иванов" required style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; font-family: inherit;">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Email</label>
+                    <input type="email" name="email" placeholder="example@mail.com" required style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; font-family: inherit;">
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Телефон</label>
+                    <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; font-family: inherit;">
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Пароль</label>
+                    <input type="password" name="password" placeholder="Минимум 6 символов" required style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; font-family: inherit;">
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Кто вы?</label>
+                    <select id="role" name="role" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; font-family: inherit; background: #fff;">
+                        <option value="user">Я гость</option>
+                        <option value="organizer">Я организатор</option>
+                    </select>
+                </div>
+                
+                <div id="organizer-fields" style="display: none; margin-bottom: 20px; padding: 20px; background: #f8fafc; border-radius: 15px;">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">Название компании</label>
+                        <input type="text" id="company_name" name="company_name" placeholder="Как называется ваш проект?" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; font-family: inherit;">
+                    </div>
+                    <div class="form-group">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px;">О себе / О проекте</label>
+                        <textarea id="description" name="description" placeholder="Расскажите немного о ваших мероприятиях" rows="3" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; font-family: inherit;"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-vk-primary" style="width: 100%; margin-bottom: 10px;">Создать аккаунт</button>
+            </form>
+            
+            <div class="auth-footer" style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+                <p style="color: #64748b; font-size: 15px; margin-bottom: 5px;">Уже есть аккаунт? <a href="/auth/login" style="color: var(--primary-purple); text-decoration: none; font-weight: 700;">Войти</a></p>
+                <p style="margin: 0;"><a href="/auth/forgot-password" style="font-size: 13px; color: #94a3b8; text-decoration: none;">Забыли пароль?</a></p>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+
+    <script src="/js/validation.js"></script>
+    <script>
+        document.getElementById('role').addEventListener('change', function() {
+            const fields = document.getElementById('organizer-fields');
+            fields.style.display = this.value === 'organizer' ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>

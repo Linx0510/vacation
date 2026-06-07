@@ -1,0 +1,31 @@
+<div id="support-chat-widget" class="support-chat-widget" aria-live="polite">
+    <button class="support-chat-toggle" type="button" aria-label="Открыть чат поддержки" aria-expanded="false">
+        <span class="support-chat-toggle-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </span>
+        <span class="support-chat-toggle-text">Поддержка</span>
+    </button>
+
+    <div class="support-chat-panel" role="dialog" aria-label="Чат поддержки">
+        <div class="support-chat-header">
+            <div>
+                <strong>Чат поддержки</strong>
+                <span>Отвечаем на вопросы по платформе</span>
+            </div>
+            <button class="support-chat-close" type="button" aria-label="Свернуть чат">×</button>
+        </div>
+
+        <div class="support-chat-messages">
+            <div class="support-chat-message is-bot">
+                <div class="support-chat-bubble">Здравствуйте! Я помогу с регистрацией, мероприятиями, отзывами и личным кабинетом. Что подсказать?</div>
+            </div>
+        </div>
+
+        <form class="support-chat-form">
+            <input class="support-chat-input" type="text" maxlength="2000" placeholder="Напишите вопрос..." autocomplete="off" required>
+            <button class="support-chat-send" type="submit">➤</button>
+        </form>
+    </div>
+</div>

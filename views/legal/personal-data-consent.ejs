@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Согласие на обработку персональных данных - Вакация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota:wght@400;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .legal-page { padding: 60px 0 100px; background: #f8fafc; min-height: 100vh; }
+        .legal-container { max-width: 900px; margin: 0 auto; background: #fff; padding: 60px; border-radius: 32px; box-shadow: 0 10px 40px rgba(0,0,0,0.03); }
+        .legal-header { margin-bottom: 40px; border-bottom: 2px solid #f1f5f9; padding-bottom: 30px; }
+        .legal-header h1 { font-family: 'Bellota', cursive; color: var(--primary-purple); font-size: 36px; margin-bottom: 15px; }
+        .legal-body { font-family: 'Manrope', sans-serif; color: #334155; line-height: 1.8; }
+        .legal-body h2 { font-family: 'Bellota', cursive; color: #1e293b; font-size: 22px; margin: 35px 0 15px; }
+        .legal-body p { margin-bottom: 15px; }
+        .legal-body ul { margin-bottom: 20px; padding-left: 20px; }
+        .legal-body li { margin-bottom: 8px; }
+        .legal-body a { color: var(--primary-purple); text-decoration: none; font-weight: 600; }
+        .legal-body a:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            .legal-container { padding: 30px; border-radius: 0; }
+            .legal-header h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <main class="legal-page">
+        <div class="legal-container">
+            <div class="legal-header">
+                <h1>Согласие на обработку персональных данных</h1>
+            </div>
+            <div class="legal-body">
+                <p>Настоящим, в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных», я даю своё согласие администрации платформы «Вакация» (далее — Оператор) на обработку моих персональных данных.</p>
+
+                <h2>1. Перечень данных, на обработку которых я даю согласие</h2>
+                <ul>
+                    <li>фамилия, имя;</li>
+                    <li>адрес электронной почты;</li>
+                    <li>номер телефона;</li>
+                    <li>дата рождения;</li>
+                    <li>фотография (аватар);</li>
+                    <li>IP-адрес;</li>
+                    <li>данные файлов cookie;</li>
+                    <li>иные данные, которые я добровольно указал(а) в своём профиле.</li>
+                </ul>
+
+                <h2>2. Цели обработки персональных данных</h2>
+                <p>Мои персональные данные обрабатываются в следующих целях:</p>
+                <ul>
+                    <li>предоставление доступа к функционалу Платформы (регистрация, авторизация);</li>
+                    <li>запись на мероприятия и связь с организаторами;</li>
+                    <li>получение уведомлений о статусе мероприятий и предложений;</li>
+                    <li>улучшение работы сервиса и персонализация контента;</li>
+                    <li>получение информационных и рекламных рассылок (при отдельном согласии).</li>
+                </ul>
+
+                <h2>3. Передача данных третьим лицам</h2>
+                <p>Я даю согласие на передачу моих персональных данных (имя, контактный телефон) организаторам мероприятий, на которые я записываюсь, в объёме, необходимом для участия в событии.</p>
+
+                <h2>4. Срок действия согласия</h2>
+                <p>Настоящее согласие действует бессрочно с момента регистрации на Платформе до момента его отзыва.</p>
+
+                <h2>5. Отзыв согласия</h2>
+                <p>Я понимаю, что могу отозвать настоящее согласие в любой момент, направив письменное уведомление на электронную почту <a href="mailto:hello@vakatsiya.ru">hello@vakatsiya.ru</a>. После отзыва согласия моя учётная запись будет удалена, а обработка персональных данных прекращена.</p>
+
+                <h2>6. Подтверждение</h2>
+                <p>Настоящим я подтверждаю, что ознакомлен(а) с Политикой конфиденциальности Платформы и согласен(на) с условиями обработки моих персональных данных.</p>
+            </div>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>
+</body>
+</html>

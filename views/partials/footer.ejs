@@ -1,0 +1,114 @@
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-grid" style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; align-items: start;">
+            <div class="footer-brand">
+                <div class="logo">
+                    <a href="/">
+                        <div class="logo-wrapper">
+                            <span class="logo-v-shape">В</span>
+                            <span class="logo-text">акация</span>
+                        </div>
+                    </a>
+                </div>
+                <p>Платформа, где организаторы находят свою аудиторию, а ты находишь самые вдохновляющие события.</p>
+            </div>
+            
+            <!-- Навигация -->
+            <div class="footer-nav-group">
+                <h4>Навигация</h4>
+                <ul>
+                    <li><a href="/events">Мероприятия</a></li>
+                    <li><a href="/proposals">Предложения</a></li>
+                    <li><a href="/about">О нас</a></li>
+                    <li><a href="/contacts">Контакты</a></li>
+                    <li><a href="/help">Помощь (FAQ)</a></li>
+                </ul>
+            </div>
+            
+            <!-- Документы -->
+            <div class="footer-nav-group">
+                <h4>Документы</h4>
+                <ul>
+                    <li><a href="/privacy">Политика конфиденциальности</a></li>
+                    <li><a href="/personal-data">Обработка персональных данных</a></li>
+                    <li><a href="/terms">Пользовательское соглашение</a></li>
+                    <li><a href="/marketing-consent">Согласие на рассылки</a></li>
+                </ul>
+            </div>
+            
+            <!-- Для организаторов / администраторов -->
+            <div class="footer-nav-group">
+                <% if (user && user.role === 'admin') { %>
+                    <h4>Администраторам</h4>
+                    <ul>
+                        <li><a href="/admin/dashboard">Дашборд</a></li>
+                        <li><a href="/admin/moderation">Модерация</a></li>
+                        <li><a href="/admin/users">Пользователи</a></li>
+                        <li><a href="/admin/partners">Партнеры</a></li>
+                        <li><a href="/admin/reports">Жалобы</a></li>
+                    </ul>
+                <% } else if (user && user.role === 'organizer') { %>
+                    <h4>Организаторам</h4>
+                    <ul>
+                        <li><a href="/organizer/dashboard">Дашборд</a></li>
+                        <li><a href="/organizer/events">Мои мероприятия</a></li>
+                        <li><a href="/events/create">Создать мероприятие</a></li>
+                        <li><a href="/partners">Партнерская программа</a></li>
+                    </ul>
+                <% } else { %>
+                    <h4>Организаторам</h4>
+                    <ul>
+                        <li><a href="/auth/register">Стать организатором</a></li>
+                        <li><a href="/partners">Партнерская программа</a></li>
+                    </ul>
+                    <!-- Дополнительная информация -->
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+                        <p style="font-size: 12px; color: #94a3b8; margin: 0; line-height: 1.5;">
+                            ИП Филиппов Алексей Сергеевич<br>
+                            ИИН: 560913288648<br>
+                            Веб-студия: Pro Traffic Group
+                        </p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+        
+        <div class="footer-bottom-new" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+            <p style="margin: 0;">© 2026 Вакация. Все права защищены.</p>
+            <div class="footer-legal">
+                <style>
+                    .social-link-item {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #888;
+                        transition: all 0.3s ease;
+                        vertical-align: middle;
+                    }
+                    .social-link-item:hover {
+                        color: #635bff;
+                        transform: translateY(-2px);
+                    }
+                </style>
+                <div class="social-links" style="display: flex; gap: 20px; align-items: center;">
+                    <a href="mailto:hello@vakatsiya.ru" title="Email" class="social-link-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </a>
+                    <a href="https://vk.com/pro.traffic.group" target="_blank" title="VK" class="social-link-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: block;">
+                            <path d="M13.162 18.994c-6.098 0-9.57-4.172-9.714-11.109h3.01c.107 5.089 2.346 7.24 4.121 7.795V7.885h2.835v4.454c1.734-.185 3.563-2.164 4.177-4.454h2.835a8.18 8.18 0 0 1-3.83 5.787 8.575 8.575 0 0 1 4.422 6.322h-3.11c-.463-1.443-1.613-2.556-3.03-2.704v2.704h-1.816z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<%- include('cookieModal') %>
+<%- include('supportChatBot') %>
+
+<script src="/js/support-chat.js"></script>

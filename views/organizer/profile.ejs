@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль организатора — Вакация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bellota:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* ПОЛНАЯ ИЗОЛЯЦИЯ ОТ ГЛОБАЛЬНЫХ СТИЛЕЙ */
+        body.org-profile-body {
+            font-family: 'Manrope', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+            display: block !important;
+        }
+        .org-profile-container {
+            display: block !important;
+            max-width: 1180px !important;
+            margin: 0 auto !important;
+            padding: 30px 20px 60px !important;
+            clear: both !important;
+            float: none !important;
+            position: static !important;
+            overflow: visible !important;
+        }
+        /* Все секции — строго вертикально */
+        .org-profile-container > * {
+            display: block !important;
+            margin-bottom: 32px !important;
+            clear: both !important;
+            float: none !important;
+            position: static !important;
+        }
+        .org-profile-container > :last-child {
+            margin-bottom: 0 !important;
+        }
+        /* Карточки */
+        .org-card {
+            background: #fff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 24px !important;
+            box-shadow: 0 10px 30px rgba(15,23,42,0.06) !important;
+        }
+        .org-hero {
+            padding: 28px !important;
+            display: grid !important;
+            grid-template-columns: 120px 1fr auto !important;
+            gap: 22px !important;
+            align-items: center !important;
+        }
+        .org-avatar {
+            width: 120px !important;
+            height: 120px !important;
+            border-radius: 28px !important;
+            object-fit: cover !important;
+            background: #eef2ff !important;
+        }
+        .org-muted {
+            color: #64748b !important;
+        }
+        .org-stats {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 16px !important;
+        }
+        .org-stat {
+            padding: 18px !important;
+        }
+        .org-stat .label {
+            font-size: 12px !important;
+            color: #64748b !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.08em !important;
+            font-weight: 800 !important;
+        }
+        .org-stat .value {
+            font-size: 28px !important;
+            font-weight: 800 !important;
+            margin-top: 8px !important;
+        }
+        .org-events {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+            gap: 18px !important;
+        }
+        .org-event-card {
+            overflow: hidden !important;
+        }
+        .org-event-media {
+            width: 100% !important;
+            height: 180px !important;
+            object-fit: cover !important;
+            display: block !important;
+            background: #eef2ff !important;
+        }
+        .org-event-body {
+            padding: 18px !important;
+        }
+        .org-badge {
+            display: inline-flex !important;
+            align-items: center !important;
+            padding: 6px 12px !important;
+            border-radius: 999px !important;
+            font-size: 12px !important;
+            font-weight: 800 !important;
+            background: #f0f0ff !important;
+            color: #635bff !important;
+        }
+        .org-empty {
+            padding: 30px !important;
+            text-align: center !important;
+            color: #94a3b8 !important;
+        }
+        .org-top {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 20px !important;
+        }
+        @media (max-width: 760px) {
+            .org-hero {
+                grid-template-columns: 1fr !important;
+                text-align: center !important;
+            }
+            .org-stats {
+                grid-template-columns: 1fr !important;
+            }
+            .org-top {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+            }
+        }
+    </style>
+</head>
+<body class="org-profile-body">
+    <%- include('../partials/header') %>
+    <main class="org-profile-container">
+        <div class="org-top">
+            <div>
+                <h1 style="margin:0 0 8px; font-size:34px;">Профиль организатора</h1>
+                <div class="org-muted">Публичная страница организатора мероприятий</div>
+            </div>
+            <a href="/events" class="org-badge" style="text-decoration:none;">К каталогу</a>
+        </div>
+
+        <div class="org-card org-hero">
+            <div>
+                <% if (organizer.avatar) { %>
+                    <img src="<%= organizer.avatar %>" alt="Аватар" class="org-avatar">
+                <% } else { %>
+                    <div class="org-avatar" style="display:flex; align-items:center; justify-content:center; font-size:40px; font-weight:800; color:#635bff;">
+                        <%= (organizer.first_name || 'O')[0].toUpperCase() %>
+                    </div>
+                <% } %>
+            </div>
+            <div>
+                <div class="org-badge" style="margin-bottom:12px;">Организатор</div>
+                <h2 style="margin:0 0 8px; font-size:30px;"><%= organizer.first_name %> <%= organizer.last_name %></h2>
+                <div class="org-muted" style="margin-bottom:12px;"><%= organizer.email %></div>
+                <div class="org-muted"><%= organizer.phone || 'Телефон не указан' %></div>
+            </div>
+            <div class="org-card" style="padding:18px 22px; min-width:180px;">
+                <div class="org-muted" style="font-size:12px; text-transform:uppercase; font-weight:800;">Одобрено</div>
+                <div style="font-size:34px; font-weight:800; margin-top:8px;"><%= stats.approved_events || 0 %></div>
+                <div class="org-muted">опубликованных событий</div>
+            </div>
+        </div>
+
+        <div class="org-stats">
+            <div class="org-card org-stat">
+                <div class="label">Всего мероприятий</div>
+                <div class="value"><%= stats.total_events || 0 %></div>
+            </div>
+            <div class="org-card org-stat">
+                <div class="label">Одобрено</div>
+                <div class="value"><%= stats.approved_events || 0 %></div>
+            </div>
+            <div class="org-card org-stat">
+                <div class="label">Организатор с</div>
+                <div class="value" style="font-size:22px;"><%= new Date(organizer.created_at).toLocaleDateString('ru-RU') %></div>
+            </div>
+        </div>
+
+        <div>
+            <h2 style="margin:0 0 18px; font-size:26px;">Мероприятия</h2>
+            <% if (events && events.length > 0) { %>
+                <div class="org-events">
+                    <% events.forEach(event => { 
+                        const isTestEvent = event.title && event.title.includes('проверки оплаты');
+                    %>
+                        <article class="org-card org-event-card">
+                            <% if (isTestEvent) { %>
+                                <img src="/images/static/friends-party-with-delicious-pizza.jpg" class="org-event-media" alt="<%= event.title %>">
+                            <% } else if (event.media_url) { %>
+                                <img src="<%= event.media_url %>" class="org-event-media" alt="<%= event.title %>">
+                            <% } else { %>
+                                <div class="org-event-media" style="display:flex; align-items:center; justify-content:center; color:#94a3b8;">Нет изображения</div>
+                            <% } %>
+                            <div class="org-event-body">
+                                <div class="org-badge" style="margin-bottom:12px;">
+                                    <%= isTestEvent ? '30 июня' : (event.date ? new Date(event.date).toLocaleDateString('ru-RU') : 'Без даты') %>
+                                </div>
+                                <h3 style="margin:0 0 10px; font-size:20px;"><a href="/events/<%= event.id %>" style="color:inherit; text-decoration:none;"><%= event.title %></a></h3>
+                                <div class="org-muted" style="line-height:1.6;">
+                                    <%= isTestEvent ? 'Оренбург, Советская 45' : (event.location || 'Локация не указана') %>
+                                </div>
+                            </div>
+                        </article>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <div class="org-card org-empty">Пока нет опубликованных мероприятий.</div>
+            <% } %>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>
+</body>
+</html>
