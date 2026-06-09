@@ -104,7 +104,7 @@ class OrganizerController {
       }
       
       // Обновляем статус на 'in_progress'
-      await db.execute('UPDATE proposals SET status = "in_progress" WHERE id = ?', [proposalId]);
+      await db.execute("UPDATE proposals SET status = 'in_progress' WHERE id = ?", [proposalId]);
       
       // Уведомление автору предложения
       try {

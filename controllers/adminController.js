@@ -4,10 +4,10 @@ const { checkProfanity, checkFormat } = require('../utils/moderationHelper');
 async function hasColumn(tableName, columnName) {
   const [rows] = await db.execute(
     `SELECT COUNT(*) AS cnt
-     FROM INFORMATION_SCHEMA.COLUMNS
-     WHERE TABLE_SCHEMA = DATABASE()
-       AND TABLE_NAME = ?
-       AND COLUMN_NAME = ?`,
+     FROM information_schema.columns
+     WHERE table_schema = current_schema()
+       AND table_name = ?
+       AND column_name = ?`,
     [tableName, columnName]
   );
   return (rows[0]?.cnt || 0) > 0;
@@ -17,10 +17,10 @@ async function hasColumn(tableName, columnName) {
 class AdminController {
   static async getDashboard(req, res) {
     try {
-      const [pendingEvents] = await db.execute('SELECT COUNT(*) as count FROM events WHERE status = "pending"');
+      const [pendingEvents] = await db.execute("SELECT COUNT(*) as count FROM events WHERE status = 'pending'");
       const [usersCount] = await db.execute('SELECT COUNT(*) as count FROM users');
-      const [eventsCount] = await db.execute('SELECT COUNT(*) as count FROM events WHERE status = "approved"');
-      const [reportsCount] = await db.execute('SELECT COUNT(*) as count FROM review_reports WHERE status = "pending"');
+      const [eventsCount] = await db.execute("SELECT COUNT(*) as count FROM events WHERE status = 'approved'");
+      const [reportsCount] = await db.execute("SELECT COUNT(*) as count FROM review_reports WHERE status = 'pending'");
       
       res.render('admin/dashboard', {
         pendingCount: pendingEvents[0]?.count || 0,
@@ -381,7 +381,7 @@ class AdminController {
     try {
       const { messageId, reply } = req.body;
       await db.execute(
-        'UPDATE contact_messages SET status = "replied", reply = ?, admin_reply = ?, replied_at = NOW() WHERE id = ?',
+        "UPDATE contact_messages SET status = 'replied', reply = ?, admin_reply = ?, replied_at = NOW() WHERE id = ?",
         [reply, reply, messageId]
       );
       res.redirect('/admin/faq');

@@ -1,61 +1,81 @@
 -- =============================================
--- СОЗДАНИЕ БАЗЫ ДАННЫХ
+-- PostgreSQL schema for the event platform
 -- =============================================
-CREATE DATABASE IF NOT EXISTS event_platform;
-USE event_platform;
+-- Create the database outside an active connection when needed:
+--   CREATE DATABASE event_platform;
+-- Then connect to it before running this file:
+--   \c event_platform
 
 -- =============================================
--- ТАБЛИЦА ПОЛЬЗОВАТЕЛЕЙ
+-- DROP TABLES
 -- =============================================
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS cookies_consent CASCADE;
+DROP TABLE IF EXISTS contact_messages CASCADE;
+DROP TABLE IF EXISTS faq CASCADE;
+DROP TABLE IF EXISTS partners CASCADE;
+DROP TABLE IF EXISTS organizers CASCADE;
+DROP TABLE IF EXISTS feed_posts CASCADE;
+DROP TABLE IF EXISTS notifications CASCADE;
+DROP TABLE IF EXISTS participants CASCADE;
+DROP TABLE IF EXISTS review_reports CASCADE;
+DROP TABLE IF EXISTS review_likes CASCADE;
+DROP TABLE IF EXISTS reviews CASCADE;
+DROP TABLE IF EXISTS proposal_votes CASCADE;
+DROP TABLE IF EXISTS proposals CASCADE;
+DROP TABLE IF EXISTS favorites CASCADE;
+DROP TABLE IF EXISTS events CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
+-- =============================================
+-- USERS
+-- =============================================
 CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     phone VARCHAR(20),
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     password_hash VARCHAR(255) NOT NULL,
-    role ENUM('user', 'organizer', 'admin') DEFAULT 'user',
+    role VARCHAR(20) DEFAULT 'user' CHECK (role IN ('user', 'organizer', 'admin')),
     avatar VARCHAR(255),
     birth_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =============================================
--- ТАБЛИЦА КАТЕГОРИЙ
+-- CATEGORIES
 -- =============================================
-DROP TABLE IF EXISTS categories;
 CREATE TABLE categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
 -- =============================================
--- ТАБЛИЦА МЕРОПРИЯТИЙ
+-- EVENTS
 -- =============================================
-DROP TABLE IF EXISTS events;
 CREATE TABLE events (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     organizer_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT,
     category_id INT,
-    status ENUM('pending', 'approved', 'rejected', 'requires_changes') DEFAULT 'pending',
+    status VARCHAR(32) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected', 'requires_changes')),
     moderation_comment TEXT,
-    date DATETIME NOT NULL,
+    date TIMESTAMP NOT NULL,
     location VARCHAR(255),
     media_url VARCHAR(255),
     max_participants INT DEFAULT 50,
     participants_count INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (organizer_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 );
 
 -- =============================================
--- ТАБЛИЦА ИЗБРАННОГО
+-- FAVORITES
 -- =============================================
-DROP TABLE IF EXISTS favorites;
 CREATE TABLE favorites (
     user_id INT NOT NULL,
     event_id INT NOT NULL,
@@ -66,107 +86,100 @@ CREATE TABLE favorites (
 );
 
 -- =============================================
--- ТАБЛИЦА ПРЕДЛОЖЕНИЙ (ГОЛОСОВАНИЕ)
+-- PROPOSALS
 -- =============================================
-DROP TABLE IF EXISTS proposals;
 CREATE TABLE proposals (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     category VARCHAR(100),
     description TEXT,
-    status ENUM('moderation', 'voting', 'approved', 'in_progress', 'completed', 'rejected') DEFAULT 'moderation',
+    status VARCHAR(32) DEFAULT 'moderation' CHECK (status IN ('moderation', 'voting', 'approved', 'in_progress', 'completed', 'rejected')),
     moderation_comment TEXT,
     votes_count INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- =============================================
--- ТАБЛИЦА ГОЛОСОВ ЗА ПРЕДЛОЖЕНИЯ
+-- PROPOSAL VOTES
 -- =============================================
-DROP TABLE IF EXISTS proposal_votes;
 CREATE TABLE proposal_votes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     proposal_id INT NOT NULL,
     user_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_vote (proposal_id, user_id),
+    CONSTRAINT unique_vote UNIQUE (proposal_id, user_id),
     FOREIGN KEY (proposal_id) REFERENCES proposals(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- =============================================
--- ТАБЛИЦА ОТЗЫВОВ (ИСПРАВЛЕННАЯ)
+-- REVIEWS
 -- =============================================
-DROP TABLE IF EXISTS reviews;
 CREATE TABLE reviews (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     event_id INT,
     rating INT DEFAULT 5,
     comment TEXT,
-    photos JSON,
-    videos JSON,
+    photos JSONB,
+    videos JSONB,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE SET NULL
 );
 
 -- =============================================
--- ТАБЛИЦА ЛАЙКОВ НА ОТЗЫВЫ
+-- REVIEW LIKES
 -- =============================================
-DROP TABLE IF EXISTS review_likes;
 CREATE TABLE review_likes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     review_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_like (user_id, review_id),
+    CONSTRAINT unique_like UNIQUE (user_id, review_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (review_id) REFERENCES reviews(id) ON DELETE CASCADE
 );
 
 -- =============================================
--- ТАБЛИЦА ЖАЛОБ НА ОТЗЫВЫ
+-- REVIEW REPORTS
 -- =============================================
-DROP TABLE IF EXISTS review_reports;
 CREATE TABLE review_reports (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     review_id INT NOT NULL,
     user_id INT NOT NULL,
     reason VARCHAR(255) NOT NULL,
-    status ENUM('pending', 'reviewed', 'rejected') DEFAULT 'pending',
+    status VARCHAR(32) DEFAULT 'pending' CHECK (status IN ('pending', 'reviewed', 'rejected')),
     admin_comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    reviewed_at TIMESTAMP NULL,
+    reviewed_at TIMESTAMP NULL DEFAULT NULL,
     FOREIGN KEY (review_id) REFERENCES reviews(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_report (review_id, user_id)
+    CONSTRAINT unique_report UNIQUE (review_id, user_id)
 );
 
 -- =============================================
--- ТАБЛИЦА УЧАСТНИКОВ МЕРОПРИЯТИЙ
+-- PARTICIPANTS
 -- =============================================
-DROP TABLE IF EXISTS participants;
 CREATE TABLE participants (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     event_id INT NOT NULL,
-    status ENUM('going', 'cancelled') DEFAULT 'going',
+    status VARCHAR(32) DEFAULT 'going' CHECK (status IN ('going', 'cancelled')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_participant (user_id, event_id),
+    CONSTRAINT unique_participant UNIQUE (user_id, event_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );
 
 -- =============================================
--- ТАБЛИЦА УВЕДОМЛЕНИЙ
+-- NOTIFICATIONS
 -- =============================================
-DROP TABLE IF EXISTS notifications;
 CREATE TABLE notifications (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     message TEXT NOT NULL,
@@ -176,11 +189,10 @@ CREATE TABLE notifications (
 );
 
 -- =============================================
--- ТАБЛИЦА ПОСТОВ В ЛЕНТЕ
+-- FEED POSTS
 -- =============================================
-DROP TABLE IF EXISTS feed_posts;
 CREATE TABLE feed_posts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     media_url VARCHAR(255),
     caption TEXT,
@@ -189,11 +201,10 @@ CREATE TABLE feed_posts (
 );
 
 -- =============================================
--- ТАБЛИЦА ОРГАНИЗАТОРОВ
+-- ORGANIZERS
 -- =============================================
-DROP TABLE IF EXISTS organizers;
 CREATE TABLE organizers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     company_name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -202,44 +213,41 @@ CREATE TABLE organizers (
 );
 
 -- =============================================
--- ТАБЛИЦА ПАРТНЕРОВ
+-- PARTNERS
 -- =============================================
-DROP TABLE IF EXISTS partners;
 CREATE TABLE partners (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INT DEFAULT NULL,
     company_name VARCHAR(255) NOT NULL,
     inn VARCHAR(20),
     contact_info TEXT,
-    status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    status VARCHAR(32) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
     commission_rate DECIMAL(5,2) DEFAULT 10.00,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
 -- =============================================
--- ТАБЛИЦА FAQ
+-- FAQ
 -- =============================================
-DROP TABLE IF EXISTS faq;
 CREATE TABLE faq (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     question TEXT NOT NULL,
     answer TEXT NOT NULL,
-    for_role ENUM('user', 'organizer', 'all') DEFAULT 'all'
+    for_role VARCHAR(20) DEFAULT 'all' CHECK (for_role IN ('user', 'organizer', 'all'))
 );
 
 -- =============================================
--- ТАБЛИЦА СООБЩЕНИЙ ОБРАТНОЙ СВЯЗИ
+-- CONTACT MESSAGES
 -- =============================================
-DROP TABLE IF EXISTS contact_messages;
 CREATE TABLE contact_messages (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     phone VARCHAR(20) NOT NULL,
     email VARCHAR(255) DEFAULT NULL,
     message TEXT NOT NULL,
     source VARCHAR(255) DEFAULT NULL,
-    status ENUM('pending', 'replied', 'closed') DEFAULT 'pending',
+    status VARCHAR(32) DEFAULT 'pending' CHECK (status IN ('pending', 'replied', 'closed')),
     reply TEXT,
     admin_reply TEXT,
     replied_at TIMESTAMP NULL DEFAULT NULL,
@@ -247,41 +255,36 @@ CREATE TABLE contact_messages (
 );
 
 -- =============================================
--- ТАБЛИЦА СОГЛАСИЯ НА COOKIE
+-- COOKIE CONSENT
 -- =============================================
-DROP TABLE IF EXISTS cookies_consent;
 CREATE TABLE cookies_consent (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     ip_or_id VARCHAR(255),
     consent BOOLEAN DEFAULT TRUE,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =============================================
--- ВСТАВКА НАЧАЛЬНЫХ КАТЕГОРИЙ
+-- INITIAL DATA
 -- =============================================
-INSERT IGNORE INTO categories (id, name) VALUES (1, 'Сезонные');
-INSERT IGNORE INTO categories (id, name) VALUES (2, 'Тематические');
-INSERT IGNORE INTO categories (id, name) VALUES (3, 'Мастер-классы');
-INSERT IGNORE INTO categories (id, name) VALUES (4, 'Выездные');
+INSERT INTO categories (id, name) VALUES
+(1, 'Сезонные'),
+(2, 'Тематические'),
+(3, 'Мастер-классы'),
+(4, 'Выездные')
+ON CONFLICT (id) DO NOTHING;
 
--- =============================================
--- ВСТАВКА ТЕСТОВОГО АДМИНА
--- =============================================
-INSERT IGNORE INTO users (email, first_name, last_name, password_hash, role) 
-VALUES ('admin@mail.ru', 'Admin', 'Adminov', '$2b$10$YourHashHere', 'admin');
+INSERT INTO users (email, first_name, last_name, password_hash, role)
+VALUES ('admin@mail.ru', 'Admin', 'Adminov', '$2b$10$YourHashHere', 'admin')
+ON CONFLICT (email) DO NOTHING;
 
--- =============================================
--- ВСТАВКА НАЧАЛЬНЫХ FAQ
--- =============================================
-INSERT IGNORE INTO faq (id, question, answer, for_role) VALUES 
+INSERT INTO faq (id, question, answer, for_role) VALUES
 (1, 'Когда и где пройдут мероприятия?', 'Площадки разные: от лофтов в центре до загородных баз отдыха. Точный адрес всегда указан на странице каждого события.', 'all'),
 (2, 'Есть ли дресс-код?', 'Если мероприятие предполагает особый стиль или тематику, мы обязательно указываем это в описании события. В остальных случаях — приходите в том, в чем вам комфортно. Главное — ваше настроение.', 'all'),
-(3, 'Как добраться до площадки?', 'После регистрации на событие мы присылаем подробную схему проезда, точный адрес и контакты организатора, чтобы вы не заблудились. Если площадка сложная — добавляем ориентиры и фото входа.', 'all');
+(3, 'Как добраться до площадки?', 'После регистрации на событие мы присылаем подробную схему проезда, точный адрес и контакты организатора, чтобы вы не заблудились. Если площадка сложная — добавляем ориентиры и фото входа.', 'all')
+ON CONFLICT (id) DO NOTHING;
 
--- =============================================
--- ПРОВЕРКА СТРУКТУРЫ ТАБЛИЦ
--- =============================================
-SHOW TABLES;
-DESCRIBE reviews;
-DESCRIBE review_likes;
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = current_schema()
+ORDER BY table_name;

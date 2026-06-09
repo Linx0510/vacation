@@ -124,7 +124,7 @@ class EventModel {
 
   static async isParticipant(eventId, userId) {
     const [rows] = await db.execute(
-      'SELECT * FROM participants WHERE event_id = ? AND user_id = ? AND status = "going"',
+      "SELECT * FROM participants WHERE event_id = ? AND user_id = ? AND status = 'going'",
       [eventId, userId]
     );
     return rows.length > 0;
@@ -132,7 +132,7 @@ class EventModel {
 
   static async addParticipant(eventId, userId) {
     const [result] = await db.execute(
-      'INSERT INTO participants (event_id, user_id, status) VALUES (?, ?, "going")',
+      "INSERT INTO participants (event_id, user_id, status) VALUES (?, ?, 'going')",
       [eventId, userId]
     );
     
