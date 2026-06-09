@@ -103,7 +103,7 @@ app.use((err, req, res, next) => {
     res.status(500).send(`<h1>Ошибка</h1><p>${err.message}</p>`);
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`\nСервер запущен: http://localhost:${PORT}`);
     console.log(`\nДАННЫЕ ДЛЯ ВХОДА:`);

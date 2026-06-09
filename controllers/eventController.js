@@ -2,6 +2,7 @@ const db = require('../config/database');
 const EventModel = require('../models/EventModel');
 const CategoryModel = require('../models/CategoryModel');
 const ReviewModel = require('../models/ReviewModel');
+const demoData = require('../utils/demoData');
 
 class EventController {
   static async getCatalog(req, res) {
@@ -49,8 +50,25 @@ class EventController {
       
       res.render('events/catalog', { events, categories, filters });
     } catch (error) {
-      console.error('Ошибка при получении каталога:', error);
-      res.status(500).send('Ошибка при получении каталога: ' + error.message);
+      console.warn('База данных недоступна, показываем демо-каталог:', error.message);
+      const filters = {
+        category: req.query.category,
+        date_from: req.query.date_from,
+        date_to: req.query.date_to,
+        search: req.query.search,
+        location: req.query.location,
+        status: 'approved'
+      };
+      const events = demoData.filterEvents(filters);
+      const categories = demoData.categories;
+      const isAjax = req.xhr || req.query.ajax === '1' || req.headers['x-requested-with'] === 'XMLHttpRequest';
+
+      return res.render('events/catalog', {
+        events,
+        categories,
+        filters,
+        ...(isAjax ? { layout: false } : {})
+      });
     }
   }
 
@@ -74,8 +92,15 @@ class EventController {
 
       res.render('events/single', { event, reviews, isGoing, isFavorite });
     } catch (error) {
-      console.error('Ошибка при получении мероприятия:', error);
-      res.status(500).send('Ошибка при получении мероприятия: ' + error.message);
+      console.warn('База данных недоступна, показываем демо-мероприятие:', error.message);
+      const event = demoData.findEventById(req.params.id);
+      if (!event) return res.status(404).send('Мероприятие не найдено');
+      return res.render('events/single', {
+        event,
+        reviews: [],
+        isGoing: false,
+        isFavorite: false
+      });
     }
   }
 
