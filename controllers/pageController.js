@@ -1,5 +1,6 @@
 const PartnerModel = require('../models/PartnerModel');
 const FaqModel = require('../models/FaqModel');
+const demoData = require('../utils/demoData');
 
 class PageController {
   static async getIndex(req, res) {
@@ -22,7 +23,8 @@ class PageController {
 
       res.render('pages/index', { events: featuredEvents });
     } catch (error) {
-      res.status(500).send('Ошибка: ' + error.message);
+      console.warn('База данных недоступна, показываем демо-данные для главной:', error.message);
+      res.render('pages/index', { events: demoData.events.slice(0, 6) });
     }
   }
 
