@@ -3,7 +3,7 @@ const db = require('../config/database');
 class PartnerModel {
   static async create({ user_id, company_name, inn, contact_info }) {
     const [result] = await db.execute(
-      'INSERT INTO partners (user_id, company_name, inn, contact_info, status) VALUES (?, ?, ?, ?, "pending")',
+      "INSERT INTO partners (user_id, company_name, inn, contact_info, status) VALUES (?, ?, ?, ?, 'pending')",
       [user_id || null, company_name, inn, contact_info]
     );
     return result.insertId;

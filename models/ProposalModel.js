@@ -3,7 +3,7 @@ const db = require('../config/database');
 class ProposalModel {
   static async create({ user_id, title, category, description }) {
     const [result] = await db.execute(
-      'INSERT INTO proposals (user_id, title, category, description, status, created_at) VALUES (?, ?, ?, ?, "moderation", NOW())',
+      "INSERT INTO proposals (user_id, title, category, description, status, created_at) VALUES (?, ?, ?, ?, 'moderation', NOW())",
       [user_id, title, category, description]
     );
     return result.insertId;

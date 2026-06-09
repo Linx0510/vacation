@@ -3,7 +3,8 @@ const db = require('../config/database');
 class ParticipantModel {
   static async add(userId, eventId) {
     const [result] = await db.execute(
-      'INSERT IGNORE INTO participants (user_id, event_id, status) VALUES (?, ?, "going")',
+      `INSERT INTO participants (user_id, event_id, status) VALUES (?, ?, 'going')
+       ON CONFLICT (user_id, event_id) DO NOTHING`,
       [userId, eventId]
     );
     return result.affectedRows;
@@ -42,7 +43,7 @@ class ParticipantModel {
 
   static async isParticipating(userId, eventId) {
     const [rows] = await db.execute(
-      'SELECT id FROM participants WHERE user_id = ? AND event_id = ? AND status = "going"',
+      "SELECT id FROM participants WHERE user_id = ? AND event_id = ? AND status = 'going'",
       [userId, eventId]
     );
     return rows.length > 0;

@@ -47,7 +47,7 @@ class ParticipantController {
       
       // Записываем пользователя
       await db.execute(
-        'INSERT INTO participants (user_id, event_id, status) VALUES (?, ?, "going")',
+        "INSERT INTO participants (user_id, event_id, status) VALUES (?, ?, 'going')",
         [userId, eventId]
       );
       

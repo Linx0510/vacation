@@ -11,7 +11,7 @@ class ContactMessageModel {
       const cleanSource = String(source || 'Неизвестно').substring(0, 100);
 
       const [result] = await db.execute(
-        'INSERT INTO contact_messages (name, phone, email, message, source, status) VALUES (?, ?, ?, ?, ?, "pending")',
+        "INSERT INTO contact_messages (name, phone, email, message, source, status) VALUES (?, ?, ?, ?, ?, 'pending')",
         [cleanName, cleanPhone, cleanEmail, cleanMessage, cleanSource]
       );
       return result.insertId;

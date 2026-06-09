@@ -76,7 +76,7 @@ class ProposalController {
       
       // Уведомление администраторам о новом предложении
       try {
-        const [admins] = await db.execute('SELECT id FROM users WHERE role = "admin"');
+        const [admins] = await db.execute("SELECT id FROM users WHERE role = 'admin'");
         const NotificationModel = require('../models/NotificationModel');
         for (const admin of admins) {
           await NotificationModel.create({

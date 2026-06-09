@@ -3,7 +3,8 @@ const db = require('../config/database');
 class FavoriteModel {
   static async add(userId, eventId) {
     const [result] = await db.execute(
-      'INSERT IGNORE INTO favorites (user_id, event_id) VALUES (?, ?)',
+      `INSERT INTO favorites (user_id, event_id) VALUES (?, ?)
+       ON CONFLICT (user_id, event_id) DO NOTHING`,
       [userId, eventId]
     );
     return result.affectedRows;

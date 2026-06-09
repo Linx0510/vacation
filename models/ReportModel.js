@@ -3,7 +3,7 @@ const db = require('../config/database');
 class ReportModel {
   static async create({ user_id, review_id, reason }) {
     const [result] = await db.execute(
-      'INSERT INTO review_reports (user_id, review_id, reason, status) VALUES (?, ?, ?, "pending")',
+      "INSERT INTO review_reports (user_id, review_id, reason, status) VALUES (?, ?, ?, 'pending')",
       [user_id, review_id, reason]
     );
     return result.insertId;
